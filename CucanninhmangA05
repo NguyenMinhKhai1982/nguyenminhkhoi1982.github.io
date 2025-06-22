@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bộ AC</title>
+    <style>
+        html, body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            flex: 1 0 auto;
+        }
+        .header {
+            position: relative;
+            text-align: center;
+            padding: 0;
+            height: 300px;
+            overflow: hidden;
+        }
+        .header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        .header-text {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            z-index: 1;
+            text-align: left;
+            background-color: rgba(0, 0, 0, 0.5); /* Nền mờ đen */
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+        .header-text h1 {
+            color: red; /* Trả về màu đỏ */
+            font-size: 48px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Bóng chữ */
+        }
+        .header-text p {
+            color: red; /* Trả về màu đỏ */
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Bóng chữ */
+        }
+        .datetime {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 16px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: #1e3a8a;
+            padding: 5px 10px;
+            border-radius: 5px;
+            z-index: 2;
+        }
+        .menu {
+            background-color: red;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .menu a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .menu a:hover {
+            background-color: darkred;
+        }
+        .menu a.active {
+            background-color: darkred;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .content h2 {
+            color: red;
+            font-weight: bold;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        table, th, td {
+            border: 1px solid #d1d5db;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            color: #1f2937;
+        }
+        th {
+            background-color: #dc2626;
+            color: white;
+            font-weight: bold;
+        }
+        td {
+            background-color: #f9fafb;
+        }
+        tr:nth-child(even) td {
+            background-color: #f1f5f9;
+        }
+        tr:hover td {
+            background-color: #fef3c7;
+            transition: background-color 0.3s ease;
+        }
+        .footer {
+            background-color: gold;
+            color: black;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+        .footer img {
+            width: 50px;
+            display: block;
+            margin: 0 auto 10px auto;
+        }
+        @media (max-width: 768px) {
+            .header {
+                height: 150px;
+            }
+            .header-text h1 {
+                font-size: 36px;
+            }
+            .header-text p {
+                font-size: 18px;
+            }
+            .datetime {
+                font-size: 14px;
+                padding: 3px 8px;
+            }
+            th, td {
+                padding: 8px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="datetime" id="datetime"></div>
+    <div class="container">
+        <div class="header">
+            <img src="hinh4.jpg">
+            <div class="header-text">
+                <h1>BỘ CÔNG AN</h1>
+                <p>Cục An ninh mạng và phòng, chống tội phạm sử dụng công nghệ cao (cục A05)</p>
+            </div>
+        </div>
+        <div class="menu">
+            <a onclick="showSection('gioi-thieu')" class="active">Giới thiệu</a>
+            <a onclick="showSection('ho-so-moi')">Hồ sơ mới</a>
+            <a onclick="showSection('uy-nhiem-chi')">Danh sách ủy nhiệm chi</a>
+            <a onclick="showSection('giai-ngan')">Danh sách giải ngân</a>
+            <a onclick="showSection('can-bo')">Danh sách cán bộ</a>
+            <a onclick="showSection('thong-tin')">Thông tin - Sự kiện</a>
+        </div>
+        <div class="content">
+            <div id="gioi-thieu" class="content-section active">
+                <h2>Giới thiệu</h2>
+                <p>Phòng thu hồi vốn được thành lập theo thông tư Liên Bộ 419/2021
+Nhằm hỗ trợ khách hàng kinh doanh trên nền tảng số (Online) đang gặp vấn đề về pháp lý không thể thu hồi nguồn vốn đầu tư. Nguồn vốn chỉ được thu hồi trong trường hợp người đầu tư tuân thủ theo quy định của pháp luật ban hành. Đầu tư trên nền tảng số có giao dịch là chủ sở hữu và còn đủ căn cứ pháp lý để làm cơ sở đối chứng. Nguồn vốn chỉ được thu hồi khi đối tác đầu tư còn duy trì hoạt động kinh doanh và nguồn tài chính còn khả năng thu hồi.
+</p>
+            </div>
+            <div id="ho-so-moi" class="content-section">
+                <h2>Hồ sơ mới</h2>
+                <table>
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và tên</th>
+                        <th>Số tài khoản</th>
+                        <th>Ngân hàng</th>
+                        <th>Số tiền (Vnđ)</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Ngọc Văn Hoàng</td>
+                        <td>123456789</td>
+                        <td>Vietcombank</td>
+                        <td>1,000,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Trần Thị Bình</td>
+                        <td>987654321</td>
+                        <td>Techcombank</td>
+                        <td>15,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Lê Văn Cường</td>
+                        <td>456789123</td>
+                        <td>BIDV</td>
+                        <td>20,000,000</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="uy-nhiem-chi" class="content-section">
+                <h2>Danh sách ủy nhiệm chi</h2>
+                <table>
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và tên</th>
+                        <th>Số tiền ủy nhiệm chi</th>
+                        <th>Số tiền giải ngân</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Phạm Thị Duyên</td>
+                        <td>25,000,000</td>
+                        <td>20,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Hoàng Văn Em</td>
+                        <td>30,000,000</td>
+                        <td>28,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Đỗ Thị Hà</td>
+                        <td>15,000,000</td>
+                        <td>15,000,000</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="giai-ngan" class="content-section">
+                <h2>Danh sách giải ngân</h2>
+                <table>
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và tên</th>
+                        <th>Số tài khoản</th>
+                        <th>Ngân hàng</th>
+                        <th>Số tiền giải ngân</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Nguyễn Thị Lan</td>
+                        <td>789123456</td>
+                        <td>Agribank</td>
+                        <td>18,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Trần Văn Minh</td>
+                        <td>321654987</td>
+                        <td>MB Bank</td>
+                        <td>22,000,000</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Lê Thị Ngọc</td>
+                        <td>654987321</td>
+                        <td>Vietcombank</td>
+                        <td>30,000,000</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="can-bo" class="content-section">
+                <h2>Danh sách cán bộ</h2>
+                <table>
+                    <tr>
+                        <th>STT</th>
+                        <th>Họ và tên</th>
+                        <th>Chức vụ</th>
+                        <th>Trình độ</th>
+                        <th>Facebook tên</th>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Nguyễn Minh Khải</td>
+                        <td>Trung tá - Trưởng phòng</td>
+                        <td>Đại học</td>
+                        <td>Khai Nguyen</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Lê Trọng Nghĩa</td>
+                        <td>Trung tá - Phó phòng</td>
+                        <td>Đại học</td>
+                        <td>Trọng Nghĩa</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Đặng Quang Khải</td>
+                        <td>Thượng úy - Chuyên viên chính</td>
+                        <td>Đại học</td>
+                        <td>Đặng Quang Khải</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Nguyễn Ngọc Hoàng</td>
+                        <td>Đại úy - Chuyên viên chính</td>
+                        <td>Đại học</td>
+                        <td>Ngoc Hoang</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Âu Thùy Linh</td>
+                        <td>Đại úy - Chuyên viên chính</td>
+                        <td>Đại học</td>
+                        <td>Au Thuy Linh</td>
+                    </tr>
+                </table>
+            </div>
+            <div id="thong-tin" class="content-section">
+                <h2>Thông tin - Sự kiện</h2>
+                <p>Vào khoảng cuối tháng 5 năm 2025, tôi có quen biết và trò chuyện qua mạng xã hội Facebook với một người dùng có tên Nguyễn Thùy Dung, giới thiệu là người ở Chí Linh, Hải Dương. Người này nói rằng đang kinh doanh mỹ phẩm và đầu tư tiền ảo (USDT).</p>
+            </div>
+        </div>
+        <div class="footer">
+            <img src="hinh3.jpg">
+            <p><strong>CỔNG THÔNG TIN ĐIỆN TỬ BỘ CÔNG AN</strong></p>
+            <p>Địa chỉ: 30 Trần Bình Trọng - Nguyễn Du - Hai Bà Trưng - Hà Nội.</p>
+            <p>Điện thoại: 069.2343647.</p>
+            <p>Website: <a href="http://www.mps.gov.vn">www.mps.gov.vn</a> hoặc <a href="http://www.bocokgngan.gov.vn">www.bocokgngan.gov.vn</a></p>
+        </div>
+    </div>
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+            const days = ['CHỦ NHẬT', 'THỨ HAI', 'THỨ BA', 'THỨ TƯ', 'THỨ NĂM', 'THỨ SÁU', 'THỨ BẢY'];
+            const dayName = days[now.getDay()];
+            const date = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const year = now.getFullYear();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const dateTimeString = `${dayName} ${date}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+            document.getElementById('datetime').innerText = dateTimeString;
+        }
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.menu a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`.menu a[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+    </script>
+</body>
+</html>
